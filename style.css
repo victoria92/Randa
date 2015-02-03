@@ -1,0 +1,42 @@
+body {
+    background: #003366;
+    margin: 0;
+}
+
+#main #code {
+    width: 80%;
+    height: 80%;
+    margin-left: 10%;
+    margin-top: 2%;
+}
+
+#main {
+    width: 100%;
+    height: 90%;
+    margin: 0;
+    background: #003366;
+}
+
+#header {
+    display:block;
+    background: #000033;
+    width: 100%;
+    height: 10%;
+    margin: 0;
+}
+
+#header h1 {
+    float: left;
+    width: 40%;
+    margin: 0;
+    margin-left: 10%;
+    font-size: 300%;
+    color: white;
+}
+
+#header img {
+    width: 10%;
+    height: 100%;
+    margin-right: 0;
+    margin-left: 40%;
+}
