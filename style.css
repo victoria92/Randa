@@ -9,6 +9,27 @@ body {
     margin-left: 10%;
     margin-top: 2%;
     background: white;
+    line-height: 120%;
+    font-size: 14px;
+}
+
+#main .line-number {
+    color:white;
+    display:block;
+    font-size: 14px;
+}
+
+#main .line-number {
+  float:left;
+  margin-left: 7%;
+  line-height: 120%;
+  border-right:1px solid;
+  text-align:right;
+}
+
+#main .line-number span {
+  display:block;
+  padding:0 .5em 0 1em;
 }
 
 #main {

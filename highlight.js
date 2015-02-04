@@ -25,21 +25,47 @@ var highlightComments = function(text) {
     return text.replace(/(#.*?$)/mg, "<font color='grey'>" + "$1" + "</font>");
 };
 
+var highlight = function(text) {
+    text = text.replace(brackets, "<font color='green'>" + "$1" + "</font>");
+    text = highlightComments(text);
+    text = highlightFunctions(text);
+    text = highlightStrings(text);
+    text = text.replace(numbers, "<font color='pink'>" + "$1" + "</font>");
+    text = text.replace(controlStructures, "<b>" + "$1" + "</b>");
+    text = text.replace(boolValues, "<font color='red'>" + "$1" + "</font>");
+    return text;
+}
+
 $(document).ready(function() {
     $("#main").on("keyup", "pre", function(event) {
         var text = $("#code").text();
         console.log(text);
         var character = String.fromCharCode(event.which);
-        if (event.which !== 0) {
-            text = text.replace(brackets, "<font color='green'>" + "$1" + "</font>");
-            text = highlightComments(text);
-            text = highlightFunctions(text);
-            text = highlightStrings(text);
-            text = text.replace(numbers, "<font color='pink'>" + "$1" + "</font>");
-            text = text.replace(controlStructures, "<b>" + "$1" + "</b>");
-            text = text.replace(boolValues, "<font color='red'>" + "$1" + "</font>");
-            console.log(text);
-            $("#code").html(text);
+        if (event.keyCode !== 13) {
+            if (event.which !== 0) {
+                text = highlight(text);
+                $("#code").html(text);
+            }
+        }
+        var main = $("#main");
+        main.html('<span class="line-number"></span>' + "<pre contenteditable='true' id='code' spellcheck='false'>" + $("#code").html()) + "</pre>";
+        var num = $("#code").html().split(/\n/).length;
+        console.log(num);
+        for (var i = 0; i < num; i++) {
+            var line_num = $("#main .line-number");
+            line_num.html(line_num.html() + '<span>' + (i + 1) + '</span>');
         }
     });
+
+    $("#style").click(function() {
+        var text = $("#code").text();
+        text = text.replace(/if\(/g, "if (");
+        text = text.replace(/(=|\+|-|\*|\\|>|<)(?=\S)/g, "$1 ");
+        text = text.replace(/(\S)(=|\+|-|\*|\\|>|<)/g, "$1 $2");
+        text = text.replace(/(,)(?=\S)/g, ", ");
+        text = text.replace(/ ,/g, ",");
+        text = text.replace(/< -/g, "<-");
+        $("#code").html(highlight(text));
+    });
+
 });
