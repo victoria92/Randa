@@ -1,59 +1,56 @@
 body {
     background: #003366;
     margin: 0;
-}
-
-#main #code, #result {
-    width: 40%;
-    height: 80%;
-    margin-left: 1%;
-    margin-top: 4%;
-    background: white;
-    line-height: 120%;
-    font-size: 14px;
     overflow: hidden;
-    font-family: 'Courier New';
 }
 
 #main #code {
+    display: block;
+    min-width: 80%;
+    height: 100%;
+    margin: 0 0 0 30px;
+    padding-left: 4px;
+}
+
+#main #editor, #result {
+    width: 48%;
+    height: 80%;
+    margin: 16px;
+    background: white;
+    font-size: 14px;
+    font-family: 'Courier New';
+    overflow: auto;
+}
+
+#main #editor {
     float: left;
 }
 
 #main #result {
-    margin-left: 55%;
-    margin-top: 4%;
-    overflow: scroll;
-    white-space: pre-line;
+    margin-left: 32px;
 }
 
 #main .line-number {
-    color:white;
-    display:block;
+    color:black;
     font-size: 14px;
-    overflow: hidden;
-    height: 80%;
-    margin-top: 4%;
-}
-
-#main .line-number {
-  float:left;
-  margin-left: 7%;
-  line-height: 120%;
-  border-right:1px solid;
-  text-align:right;
+    height: 100%;
+    width: 28px;
+    margin: 0;
+    padding: 0;
+    float:left;
+    text-align:right;
 }
 
 #main .line-number span {
-  display:block;
-  padding:0 .5em 0 1em;
+    border-right: 1px solid black;
+    display:block;
+    clear: left;
+    padding: 0 2px 0 0;
 }
 
 #main {
-    width: 100%;
-    height: 90%;
     margin: 0;
-    background: #003366;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 #header {
