@@ -39,22 +39,32 @@ var highlight = function(text) {
 $(document).ready(function() {
     $("#main").on("keyup", "pre", function(event) {
         var text = $("#code").text();
-        console.log(text);
         var character = String.fromCharCode(event.which);
+        text = text.replace(/(^.*?$)/mg, "<span class='row' contenteditable=true>" + "$1" + "</span>");
         if (event.keyCode !== 13) {
             if (event.which !== 0) {
-                text = highlight(text);
-                $("#code").html(text);
+               // text = highlight(text);
+               // $("#code").html(text);
             }
         }
-        var main = $("#main");
-        main.html('<span class="line-number"></span>' + "<pre contenteditable='true' id='code' spellcheck='false'>" + $("#code").html()) + "</pre>";
-        var num = $("#code").html().split(/\n/).length;
-        console.log(num);
-        for (var i = 0; i < num; i++) {
-            var line_num = $("#main .line-number");
+        if (event.keyCode === 13) {
+            html = $("#code").html();
+            html = html.replace(/<div>/g, "\n");
+            html = html.replace(/<\/div>/g, "");
+            $("#code").html(html);
+        }
+
+        var line_num = $("#main .line-number");
+        line_num.html("");
+        var linesNumber = $("#code").html().split(/\n/).length;
+        for (var i = 0; i < linesNumber; i++) {
             line_num.html(line_num.html() + '<span>' + (i + 1) + '</span>');
         }
+    });
+
+    $("#main").on("keyup", "span", function(event) {
+        var text = $(this).text();
+        console.log(text);
     });
 
     $("#style").click(function() {
@@ -62,10 +72,23 @@ $(document).ready(function() {
         text = text.replace(/if\(/g, "if (");
         text = text.replace(/(=|\+|-|\*|\\|>|<)(?=\S)/g, "$1 ");
         text = text.replace(/(\S)(=|\+|-|\*|\\|>|<)/g, "$1 $2");
+        text = text.replace(/(\S)(=|\+|-|\*|\\|>|<)/g, "$1 $2");
         text = text.replace(/(,)(?=\S)/g, ", ");
         text = text.replace(/ ,/g, ",");
         text = text.replace(/< -/g, "<-");
         $("#code").html(highlight(text));
     });
 
+    $("#compile").click(function() {
+        var ajaxurl = 'server.php',
+        data =  {'action': 'compile', 'code': $("#code").text()};
+        $.post(ajaxurl, data, function (response) {
+            response = jQuery.parseJSON(response);
+            $("#result").html(response.code);
+            console.log(response);
+            alert("action performed successfully");
+        });
+    });
+
 });
+

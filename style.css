@@ -3,7 +3,7 @@ body {
     margin: 0;
 }
 
-#main #code {
+#main #code, #result {
     width: 80%;
     height: 80%;
     margin-left: 10%;
@@ -11,12 +11,14 @@ body {
     background: white;
     line-height: 120%;
     font-size: 14px;
+    overflow: hidden;
 }
 
 #main .line-number {
     color:white;
     display:block;
     font-size: 14px;
+    overflow: hidden;
 }
 
 #main .line-number {
