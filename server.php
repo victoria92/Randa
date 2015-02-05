@@ -17,7 +17,7 @@ function compile() {
     $response = array("text" => "Compiling");
     $code = $_POST['code']; 
     $code = preg_replace("/(hist\(.*?\))/", "print(\"<img src='temp.png'>\") \n$1", $code);
-    $code = preg_replace("/(hist\(.*?\))/", "png(filename=temp.png, width=100, height=100)\n$1\ngraphics.off()", $code);
+    $code = preg_replace("/(hist\(.*?\))/", "png(filename=\"temp.png\", width=500, height=500)\n$1\ngraphics.off()", $code);
     file_put_contents("main.r", $code);
     exec("Rscript main.r > result");
     $nocache = rand();
