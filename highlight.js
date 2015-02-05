@@ -64,7 +64,6 @@ $(document).ready(function() {
 
     $("#main").on("keyup", "span", function(event) {
         var text = $(this).text();
-        console.log(text);
     });
 
     $("#style").click(function() {
@@ -85,8 +84,6 @@ $(document).ready(function() {
         $.post(ajaxurl, data, function (response) {
             response = jQuery.parseJSON(response);
             $("#result").html(response.code);
-            console.log(response);
-            alert("action performed successfully");
         });
     });
 
