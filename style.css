@@ -7,7 +7,7 @@ body {
     width: 40%;
     height: 80%;
     margin-left: 1%;
-    margin-top: 0;
+    margin-top: 4%;
     background: white;
     line-height: 120%;
     font-size: 14px;
@@ -29,6 +29,8 @@ body {
     display:block;
     font-size: 14px;
     overflow: hidden;
+    height: 80%;
+    margin-top: 4%;
 }
 
 #main .line-number {
@@ -49,6 +51,7 @@ body {
     height: 90%;
     margin: 0;
     background: #003366;
+    overflow: scroll;
 }
 
 #header {
@@ -61,7 +64,7 @@ body {
 
 #header h1 {
     float: left;
-    width: 40%;
+    width: 30%;
     margin: 0;
     margin-left: 10%;
     font-size: 300%;
@@ -78,9 +81,9 @@ body {
     width: 25%;
     height: 80%;
     margin-top: 2%;
+    margin-left: 5%;
     background: green;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
+    border-radius: 15px;
 }
 
 #header img {

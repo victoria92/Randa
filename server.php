@@ -16,18 +16,30 @@ if (isset($_POST['action'])) {
 function compile() {
     $response = array("text" => "Compiling");
     $code = $_POST['code'];
-    $uuid = uniqid();
-    $old_code = $code;
-    $imgid = 0;
-    do {
-        $imgid++;
-        $old_code = $code;
-        $code = preg_replace("/((hist|plot|boxplot)\(.*?\))(?<!\ngraphics)/", "print(\"<img src='{$uuid}-{$imgid}.png'>\") \n$1", $code);
-        $code = preg_replace("/((hist|plot|boxplot)\(.*?\))(?<!\ngraphics)/", "png(filename=\"{$uuid}-{$imgid}.png\", width=500, height=500)\n$1\ngraphics.off()", $code);
-    } while ($imgid < 4);
-    file_put_contents("{$uuid}-main.r", $code);
-    exec("Rscript {$uuid}-main.r > {$uuid}");
-    $response = array("code" => file_get_contents("./{$uuid}"));
+    $request_id = uniqid();
+    $code = preg_replace_callback(
+            "/((hist|plot|boxplot)\(.*?\))/",
+            function($matches) {
+                    $image_id = uniqid();
+
+                    $result = "print('<img src=";
+                    $result .= '"';
+                    $result .= "./dumps/graphics/{$image_id}.png";
+                    $result .= '">';
+                    $result .= "')\n";
+                    $result .= 'png(filename="';
+                    $result .= "./dumps/graphics/{$image_id}.png";
+                    $result .= '", width=500, height=500)';
+                    $result .= "\n";
+                    $result .= $matches[0];
+                    $result .= "\ngraphics.off()\n";
+                    return $result;
+            },
+            $code);
+    $output = array();
+    file_put_contents("./dumps/code/{$request_id}.r", $code);
+    exec("Rscript ./dumps/code/{$request_id}.r", $output);
+    $response = array("code" => stripslashes(implode($output)));
     echo json_encode($response);
 }
 
