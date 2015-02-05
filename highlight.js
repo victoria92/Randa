@@ -37,20 +37,21 @@ var highlight = function(text) {
 }
 
 var autoindent = function(text) {
-    text = text.replace(/^\s*/, "");
+    text = text.replace(/^\s*/gm, "");
     text = text.split("\n");
     var indent = 0;
     for (var i = 0; i < text.length; i++) {
-        text[i] = Array(indent + 1).join(" ") + text[i];
-        if (text[i][text[i].length-1] === '{') {
-            indent += 2;
-        }
         if (text[i][text[i].length-1] === '}') {
             indent -= 2;
-            text[i] = "}";
             if (indent < 0) {
                 indent = 0;
             }
+            text[i] = Array(indent + 1).join(" ") + text[i];
+            continue;
+        }
+        text[i] = Array(indent + 1).join(" ") + text[i];
+        if (text[i][text[i].length-1] === '{') {
+            indent += 2;
         }
     }
     return text.join("\n");
@@ -112,10 +113,10 @@ $("#main").on("keyup", "pre", function(event) {
     });
 
     $("#download").click(function() {
-        var ajaxurl = 'server.php',
+        var ajaxurl = 'download.php',
         data = {'action': 'download', 'code': $("#code").text()};
         $.post(ajaxurl, data, function (response) {
-            alert("Downloading...");
+            document.location = response;
         });
     });
 });

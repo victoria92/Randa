@@ -14,7 +14,6 @@ if (isset($_POST['action'])) {
 }
 
 function compile() {
-    $response = array("text" => "Compiling");
     $code = $_POST['code'];
     $request_id = uniqid();
     $code = preg_replace_callback(
@@ -41,17 +40,6 @@ function compile() {
     exec("Rscript ./dumps/code/{$request_id}.r", $output);
     $response = array("code" => stripslashes(implode($output)));
     echo json_encode($response);
-}
-
-function download() {
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename='.basename('main.r'));
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate');
-    header('Pragma: public');
-    header('Content-Length: ' . filesize($file));
-    echo readfile("./main.r");
 }
 
 function upload() {
