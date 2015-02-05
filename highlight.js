@@ -5,7 +5,7 @@ statsFunctions = /\b((d|p|q|r)(norm|binom|pois|unif))\b/g;
 otherFunctions = /\b(mean|sd|median|quantile|range|sum|diff|min|max|scale|seq|rep|cut|c)\b/g;
 controlStructures = /\b(if|else|for|while|switch|ifelse)\b/g;
 boolValues = /\b(TRUE|FALSE|T|F|NULL)\b/g;
-brackets = /(\[|\]|\(|\))/g;
+brackets = /(\[|\]|\(|\)|\{|\})/g;
 
 currentWord = "";
 
@@ -34,6 +34,26 @@ var highlight = function(text) {
     text = text.replace(controlStructures, "<b>" + "$1" + "</b>");
     text = text.replace(boolValues, "<font color='red'>" + "$1" + "</font>");
     return text;
+}
+
+var autoindent = function(text) {
+    text = text.replace(/^\s*/, "");
+    text = text.split("\n");
+    var indent = 0;
+    for (var i = 0; i < text.length; i++) {
+        text[i] = Array(indent + 1).join(" ") + text[i];
+        if (text[i][text[i].length-1] === '{') {
+            indent += 2;
+        }
+        if (text[i][text[i].length-1] === '}') {
+            indent -= 2;
+            text[i] = "}";
+            if (indent < 0) {
+                indent = 0;
+            }
+        }
+    }
+    return text.join("\n");
 }
 
 $(document).ready(function() {
@@ -75,6 +95,10 @@ $("#main").on("keyup", "pre", function(event) {
         text = text.replace(/(,)(?=\S)/g, ", ");
         text = text.replace(/ ,/g, ",");
         text = text.replace(/< -/g, "<-");
+        text = text.replace(/\n\{/g, "{");
+        text = text.replace(/{([^\n])/g, "{\n$1");
+        text = text.replace(/([^\n])}/g, "$1\n}");
+        text = autoindent(text);
         $("#code").html(highlight(text));
     });
 
