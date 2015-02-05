@@ -1,7 +1,7 @@
 numbers = /\b(\d+\.?\d?)\b/g;
 numFunctions = /\b(abs|sqrt|ceiling|floor|trunc|round|signif|cos|sin|tan|log|log10|exp)\b/g;
 charFunctions = /\b(substr|grep|sub|strsplit|paste|toupper|tolower)\b/g;
-statsFunctions = /\b(d|p|q|r)(norm|binom|pois|unif)\b/g;
+statsFunctions = /\b((d|p|q|r)(norm|binom|pois|unif))\b/g;
 otherFunctions = /\b(mean|sd|median|quantile|range|sum|diff|min|max|scale|seq|rep|cut|c)\b/g;
 controlStructures = /\b(if|else|for|while|switch|ifelse)\b/g;
 boolValues = /\b(TRUE|FALSE|T|F|NULL)\b/g;
@@ -37,11 +37,11 @@ var highlight = function(text) {
 }
 
 $(document).ready(function() {
-    $("#main").on("keyup", "pre", function(event) {
-        var text = $("#code").text();
+$("#main").on("keyup", "pre", function(event) {
+    var text = $("#code").text();
         var character = String.fromCharCode(event.which);
         text = text.replace(/(^.*?$)/mg, "<span class='row' contenteditable=true>" + "$1" + "</span>");
-        if (event.keyCode !== 13) {
+         if (event.keyCode !== 13) {
             if (event.which !== 0) {
                // text = highlight(text);
                // $("#code").html(text);
@@ -49,7 +49,7 @@ $(document).ready(function() {
         }
         if (event.keyCode === 13) {
             html = $("#code").html();
-            html = html.replace(/<div>/g, "\n");
+            html = html.replace(/(<div>|<br>)/g, "\n");
             html = html.replace(/<\/div>/g, "");
             $("#code").html(html);
         }
@@ -87,5 +87,12 @@ $(document).ready(function() {
         });
     });
 
+    $("#download").click(function() {
+        var ajaxurl = 'server.php',
+        data = {'action': 'download', 'code': $("#code").text()};
+        $.post(ajaxurl, data, function (response) {
+            alert("Downloading...");
+        });
+    });
 });
 
